@@ -1,0 +1,44 @@
+<project name="antsubfile" basedir="." default="numer">
+
+<taskdef resource="net/sf/antcontrib/antcontrib.properties"/>
+
+<target name="num" description="numbers" depends="days">
+	<echo message="12345"/>
+	<echo>00000</echo>
+</target>
+
+<target name="numer" depends="num">
+	<echo message="calling main"/>
+</target>
+
+<target name="days" description="days details">
+	<echo message="first day is: ${DAY1}"/>
+	<echo message="second day is : ${DAY2}"/>
+	<echo message="third day is: ${DAY3}"/>
+</target>
+
+<target name="quest" description="read user input">
+<echo message="${ant.home}"/>
+	<input addProperty="user_name" 
+	message="ENTER THE NAME:"
+	defaultvalue="prasanth"/>
+	
+	<if>
+		<equals arg1="${user_name}" arg2="prasanth"/>
+	<then>
+		<echo message="EQUAL: Entered name DEFAULT name"/>
+	</then>
+	<else>
+		<echo message="Entered another name."/>
+	</else>
+	</if>
+	
+</target>
+
+
+<target name="argcheck" description="passing arguments">
+	<echo message="skipTest value is: ${skipTest}"/>
+	<echo message="runTest value is: ${runTest}"/>
+	<echo message="Entered name is: ${user_name}"/>
+</target>
+</project>

@@ -1,0 +1,81 @@
+<project name="IRM" basedir="." default="main">
+
+<!-- Setting Global Variables -->
+<property name="src_dir" value="src/main/java"/>
+<property name="aoneSol_dir" value="src/com/aonesolutions"/>
+<property name="test_dir" value="test/main/java"/>
+<property name="classes_dir" value="target/classes"/>
+<property name="package_dir" value="target/build"/>
+
+<filelist id="txtfiles" dir="${aoneSol_dir}"> 
+	<file name="one.txt"/>
+	<file name="three.txt"/>
+</filelist>
+
+<patternset id="capitalfiles">
+  <include name="**/*.java"/>
+  <exclude name="**/*WORLD*"/>
+</patternset>
+
+<path id="classpath">
+    <pathelement location="${ant.home}/lib/junit-4.10.jar"/>
+</path>
+
+<target name="clean" description="cleaning target folder">
+	<echo message="Removing directory structure"/>
+	<delete dir="target"/>
+</target>
+
+<target name="create" description="creating directory structure">
+	<echo message="Creating directory structure"/>
+	<mkdir dir="${classes_dir}"/>
+	<mkdir dir="${package_dir}"/>
+</target>
+
+<target name="copy" description="copying java files">
+
+	<copy todir="${src_dir}">
+		<fileset dir="${aoneSol_dir}" casesensitive="yes">
+			<patternset refid="capitalfiles"/>
+		</fileset>
+	</copy>
+	
+	<copy todir="${package_dir}">
+		<filelist refid="txtfiles"/>
+	</copy>
+	
+	<copy file="${aoneSol_dir}/build.properties" todir="${package_dir}">
+		<filterset>
+			<filter token="BUILDNUMBER" value="200"/>
+		</filterset>
+	</copy>
+	
+</target>
+
+<target name="compile" description="compiling">
+	<echo message="Compiling source code"/>
+	<javac srcdir="${src_dir}" destdir="${classes_dir}" includeantruntime="false">
+		<exclude name="**/MessageGenerator.java"/>
+	</javac>
+</target>
+
+<target name="package" description="creating package">
+	<echo message="Packaging binaries"/>
+	<zip destfile="${package_dir}/${ant.project.name}.zip" basedir="${classes_dir}"/>
+</target>
+
+<target name="junitTest" description="java test cases checking">
+	<echo message="Checking java test cases"/>
+	<junit>
+		<classpath refid="classpath"/>
+		<formatter type="brief" usefile="false"/>
+        <test name="com.aonesolutions.MessageGenerator" haltonfailure="no" todir="${reports_dir}"/>	 
+		<test name="test.main.java.TestJunit" haltonfailure="no" todir="${reports_dir}"/>
+	</junit>
+</target>
+
+<target name="main" description="calling all targets" depends="clean, create, copy, compile, package, junitTest">
+	<echo message="Calling all targets"/>
+</target>
+
+</project>
