@@ -75,7 +75,7 @@
 </target>
 
 <target name="main" description="calling all targets" depends="clean, create, copy, compile, package, junitTest">
-	<echo message="Calling all targets"/>
+	<echo message="all targets are called"/>
 </target>
 
 </project>
