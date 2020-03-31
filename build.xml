@@ -1,3 +1,4 @@
+
 <project name="IRM" basedir="." default="main">
 
 <!-- Setting Global Variables -->
@@ -22,7 +23,7 @@
 </path>
 
 <target name="clean" description="cleaning target folder">
-	<echo message="Removing directory structure"/>
+	<echo message="Removing in directory structure"/>
 	<delete dir="target"/>
 </target>
 
