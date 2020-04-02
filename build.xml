@@ -7,6 +7,7 @@
 <property name="test_dir" value="test/main/java"/>
 <property name="classes_dir" value="target/classes"/>
 <property name="package_dir" value="target/build"/>
+<property name ="report_dir" value="target/report"/>
 
 <filelist id="txtfiles" dir="${aoneSol_dir}"> 
 	<file name="one.txt"/>
@@ -31,6 +32,7 @@
 	<echo message="Creating directory structure"/>
 	<mkdir dir="${classes_dir}"/>
 	<mkdir dir="${package_dir}"/>
+	<mkdir dir="${report_dir}"/>
 </target>
 
 <target name="copy" description="copying java files">
@@ -67,15 +69,27 @@
 
 <target name="junitTest" description="java test cases checking">
 	<echo message="Checking java test cases"/>
-	<junit>
+	<junit haltonerror="false" haltonfailure="no"  printsummary="yes">
 		<classpath refid="classpath"/>
-		<formatter type="brief" usefile="false"/>
-        <test name="com.aonesolutions.MessageGenerator" haltonfailure="no" todir="${reports_dir}"/>	 
-		<test name="test.main.java.TestJunit" haltonfailure="no" todir="${reports_dir}"/>
+		<formatter type="xml" usefile="true"/>
+        <test name="${test_dir}" haltonfailure="no" todir="${report_dir}" outfile="result"/>	 
+		<test name="test.main.java.TestJunit" haltonfailure="no" todir="${report_dir}" outfile="report"/> 
 	</junit>
 </target>
+<!--
+<target name="report" >
+        <junitreport todir="${report_dir}"/>
+            <fileset dir="${aoneSol_dir}">
+                <include name="**/*.xml"/>
+            </fileset>
+            <report todir="${report_dir}"/>
+			<report format="frames" todir="junithtml" styledir="../../ant/xsl"/>
+        </junitreport>
+</target>
 
-<target name="main" description="calling all targets" depends="clean, create, copy, compile, package, junitTest">
+
+-->
+<target name="main" description="calling all targets" depends="clean, create, copy, compile, package,junitTest ">
 	<echo message="calling all the targets"/>
 </target>
 
